@@ -1,0 +1,17 @@
+FROM node:alpine
+
+RUN npm config set https-proxy http://genproxy.amdocs.com:8080/
+WORKDIR '/app'
+
+COPY package.json .
+
+RUN npm config set proxy http://genproxy.amdocs.com:8080/
+RUN npm config set https-proxy http://genproxy.amdocs.com:8080/
+RUN npm config set strict-ssl false
+RUN npm config set unsafe-perm true
+RUN npm config set registry http://registry.npmjs.org/
+RUN npm install
+
+COPY . .
+
+CMD ["npm", "run", "start"]
